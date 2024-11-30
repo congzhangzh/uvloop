@@ -556,6 +556,9 @@ cdef class Loop:
             # The loop was stopped with an error with 'loop._stop(error)' call
             raise self._last_error
 
+    def run_once(self):
+        self._run(uv.UV_RUN_NOWAIT)
+
     cdef _close(self):
         cdef int err
 
@@ -1403,6 +1406,9 @@ cdef class Loop:
     def is_running(self):
         """Return whether the event loop is currently running."""
         return bool(self._running)
+
+    def set_running(self, is_running):
+        self._running=1 if is_running else 0
 
     def is_closed(self):
         """Returns True if the event loop was closed."""
