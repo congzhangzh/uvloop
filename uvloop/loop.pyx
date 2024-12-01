@@ -1170,9 +1170,6 @@ cdef class Loop:
 
         #TODO min works?    
         next_timer = min(self._timers, key=lambda x: x.when())
-        
-        print('find a timer:')
-        print(len(self._timers))
         return next_timer.get_due_in()
 
     cdef _print_debug_info(self):
