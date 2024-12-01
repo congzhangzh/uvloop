@@ -488,6 +488,9 @@ cdef class Loop:
         if self._stopping:
             uv.uv_stop(self.uvloop)  # void
 
+    def process_ready(self):
+        self._on_idle(self)
+
     cdef _stop(self, exc):
         if exc is not None:
             self._last_error = exc
@@ -1260,12 +1263,13 @@ cdef class Loop:
     # Public API
 
     def __repr__(self):
-        return '<{}.{} running={} closed={} debug={}>'.format(
+        return '<{}.{} running={} closed={} debug={} ready={}>'.format(
             self.__class__.__module__,
             self.__class__.__name__,
             self.is_running(),
             self.is_closed(),
-            self.get_debug()
+            self.get_debug(),
+            self.len(self._ready)
         )
 
     def call_soon(self, callback, *args, context=None):
