@@ -489,7 +489,7 @@ cdef class Loop:
             uv.uv_stop(self.uvloop)  # void
 
     def process_ready(self):
-        self._on_idle(self)
+        self._on_idle()
 
     cdef _stop(self, exc):
         if exc is not None:
@@ -1159,6 +1159,22 @@ cdef class Loop:
         """This method is used by uvloop tests and is not part of the API."""
         return uv.uv_backend_fd(self.uvloop)
 
+    def get_backend_timeout(self):
+        """Get the poll timeout for the next timer"""
+        #return uv.uv_backend_timeout(self.uvloop)
+        if self._stopping:
+            return 0
+        
+        if not self._timers:
+            return -1
+
+        #TODO min works?    
+        next_timer = min(self._timers, key=lambda x: x.when())
+        
+        print('find a timer:')
+        print(len(self._timers))
+        return next_timer.get_due_in()
+
     cdef _print_debug_info(self):
         cdef:
             int err
@@ -1269,7 +1285,7 @@ cdef class Loop:
             self.is_running(),
             self.is_closed(),
             self.get_debug(),
-            self.len(self._ready)
+            len(self._ready)
         )
 
     def call_soon(self, callback, *args, context=None):

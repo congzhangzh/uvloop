@@ -283,7 +283,7 @@ cdef extern from "uv.h" nogil:
     int uv_loop_alive(uv_loop_t* loop)
     int uv_loop_fork(uv_loop_t* loop)
     uv_os_fd_t uv_backend_fd(uv_loop_t* loop)
-
+    int uv_backend_timeout(const uv_loop_t* loop)
     void uv_update_time(uv_loop_t* loop)
     uint64_t uv_now(const uv_loop_t*)
 
@@ -320,7 +320,7 @@ cdef extern from "uv.h" nogil:
                        uint64_t timeout,
                        uint64_t repeat)
     int uv_timer_stop(uv_timer_t* handle)
-
+    uint64_t uv_timer_get_due_in(const uv_timer_t* handle)
     # DNS
     int uv_getaddrinfo(uv_loop_t* loop,
                        uv_getaddrinfo_t* req,

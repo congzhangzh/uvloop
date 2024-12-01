@@ -62,6 +62,9 @@ cdef class UVTimer(UVHandle):
     cdef get_when(self):
         return self.start_t + self.timeout
 
+    cdef uint64_t get_due_in(self):
+        return uv.uv_timer_get_due_in(<uv.uv_timer_t*>self._handle)
+
     @staticmethod
     cdef UVTimer new(Loop loop, method_t callback, object ctx,
                      uint64_t timeout):

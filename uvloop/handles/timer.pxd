@@ -12,6 +12,7 @@ cdef class UVTimer(UVHandle):
     cdef stop(self)
     cdef start(self)
     cdef get_when(self)
+    cdef uint64_t get_due_in(self)
 
     @staticmethod
     cdef UVTimer new(Loop loop, method_t callback, object ctx,

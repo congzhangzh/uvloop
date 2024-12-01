@@ -312,6 +312,8 @@ cdef class TimerHandle:
     def when(self):
         return self._when
 
+    def get_due_in(self):
+        return self.timer.get_due_in()
 
 cdef format_callback_name(func):
     if hasattr(func, '__qualname__'):
